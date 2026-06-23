@@ -4,6 +4,10 @@ import com.vivek.library.entity.Book;
 import com.vivek.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 public class BookService {
     private final BookRepository bookRepository;
@@ -21,6 +25,41 @@ public class BookService {
         }
         book.setAvailableQuant(book.getQuantity());
         return bookRepository.save(book);
+    }
+
+    public List<Book> getAllBooks(){
+        return bookRepository.findAll();
+    }
+
+    public Book getBookById(Long id){
+        return bookRepository.findById(id).orElse(null);
+    }
+
+    public Book updateBook(Long id,Book updatedBook) {
+        Book existingbook = bookRepository.findById(id).orElse(null);
+        if (existingbook == null) {
+            return null;
+        }
+
+        existingbook.setTitle(updatedBook.getTitle());
+        existingbook.setAuthor(updatedBook.getAuthor());
+        existingbook.setPrice(updatedBook.getPrice());
+        existingbook.setIsbn(updatedBook.getIsbn());
+        existingbook.setQuantity(updatedBook.getQuantity());
+        existingbook.setAvailableQuant(updatedBook.getQuantity());
+
+        return bookRepository.save(existingbook);
+    }
+
+    public boolean deleteBook(Long id){
+        Book book = bookRepository.findById(id).orElse(null);
+
+        if(book==null){
+            return false;
+        }
+        bookRepository.delete(book);
+
+        return true;
     }
 
 }
