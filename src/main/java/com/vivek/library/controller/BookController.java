@@ -3,6 +3,7 @@ package com.vivek.library.controller;
 import com.vivek.library.entity.Book;
 import com.vivek.library.service.BookService;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,11 +30,11 @@ public class BookController {
          return bookService.getBookById(id);
      }
      @PostMapping
-     public Book addBook(@RequestBody Book book){
+     public Book addBook(@Valid @RequestBody Book book){
          return bookService.saveBook(book);
      }
      @PutMapping("/{id}")
-     public ResponseEntity<Book> updateBook(@PathVariable Long id, @RequestBody Book updatedBook){
+     public ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody Book updatedBook){
          Book book =bookService.updateBook(id,updatedBook);
 
          if(book==null){

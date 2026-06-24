@@ -1,6 +1,7 @@
 package com.vivek.library.service;
 
 import com.vivek.library.entity.Book;
+import com.vivek.library.exception.BookNotFoundException;
 import com.vivek.library.repository.BookRepository;
 import org.springframework.stereotype.Service;
 
@@ -32,7 +33,7 @@ public class BookService {
     }
 
     public Book getBookById(Long id){
-        return bookRepository.findById(id).orElse(null);
+        return bookRepository.findById(id).orElseThrow(() ->new BookNotFoundException("Book not found with id :" +id));
     }
 
     public Book updateBook(Long id,Book updatedBook) {

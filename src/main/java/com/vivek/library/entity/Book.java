@@ -1,6 +1,9 @@
 package com.vivek.library.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
 
@@ -11,16 +14,21 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(length = 50, nullable = false)
+    @NotBlank(message="title can't be blank")
     private String title;
     @Column(length = 50, nullable = false)
+    @NotBlank(message="Author can't be empty")
     private String author;
     @Column(nullable = false, unique = true)
+    @NotBlank(message="isbn can't be empty")
     private String isbn;
     @Column(nullable = false)
+    @Positive(message="Quantity can't be negative")
     private Integer quantity;
     @Column(nullable = false)
     private Integer availableQuant;
     @Column(nullable = false, precision=10,scale =2)
+    @PositiveOrZero(message="Price can be zero but not negative")
     private BigDecimal price;
 
     @ManyToOne
