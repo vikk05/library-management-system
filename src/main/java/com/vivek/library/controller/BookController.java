@@ -1,5 +1,7 @@
 package com.vivek.library.controller;
 
+import com.vivek.library.dto.BookRequestDto;
+import com.vivek.library.dto.BookResponseDto;
 import com.vivek.library.entity.Book;
 import com.vivek.library.service.BookService;
 
@@ -30,8 +32,8 @@ public class BookController {
          return bookService.getBookById(id);
      }
      @PostMapping
-     public Book addBook(@Valid @RequestBody Book book){
-         return bookService.saveBook(book);
+     public BookResponseDto addBook(@Valid @RequestBody BookRequestDto dto){
+         return bookService.saveBook(dto);
      }
      @PutMapping("/{id}")
      public ResponseEntity<Book> updateBook(@PathVariable Long id, @Valid @RequestBody Book updatedBook){
