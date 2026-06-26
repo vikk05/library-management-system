@@ -8,6 +8,8 @@ import java.math.BigDecimal;
 
 public class BookRequestDto {
 
+    private Long categoryId;
+
     @NotBlank
     private String title;
 
@@ -72,5 +74,13 @@ public class BookRequestDto {
 
     public void setQuantity(Integer quantity) {
         this.quantity = quantity;
+    }
+
+    public Long getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(Long categoryId) {
+        this.categoryId = categoryId;
     }
 }
