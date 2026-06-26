@@ -66,6 +66,32 @@ src
 * Repository Pattern
 * One-to-Many / Many-to-One Mapping
 
+# Screenshots
+
+## Get All Books
+
+![Get All Books](screenshots/get_all_books.png)
+
+## Book Table
+
+![Book Table](screenshots/book_table.png)
+
+## Category Created
+
+![Category Created](screenshots/category_created.png)
+
+## Category Updated
+
+![Category Updated](screenshots/category_updated.png)
+
+## Category Deleted
+
+![Category Deleted](screenshots/category_deleted.png)
+
+## Category Not Found
+
+![Category Not Found](screenshots/category_notfound.png)
+
 ## Future Improvements
 
 * Pagination & Sorting
