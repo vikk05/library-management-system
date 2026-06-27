@@ -6,15 +6,19 @@ A RESTful Library Management System built using Spring Boot. The project demonst
 
 ## Features
 
-* Book CRUD APIs
-* Category CRUD APIs
-* Request and Response DTOs
-* Global Exception Handling
-* Input Validation
-* Category-Book Relationship
-* Spring Data JPA & Hibernate
-* MySQL Database
-* Pagination & Sorting
+- 📚 Book CRUD APIs
+- 🗂️ Category CRUD APIs
+- 📄 Request & Response DTOs
+- ✅ Input Validation
+- ⚠️ Global Exception Handling
+- 🔗 Category-Book Relationship
+- 🗄️ Spring Data JPA & Hibernate
+- 💾 MySQL Database Integration
+- 📄 Pagination
+- 🔃 Sorting
+- 🔍 Search by Title
+- 👤 Search by Title & Author
+- 💰 Search by Price Range
 
 ## Tech Stack
 
@@ -44,11 +48,17 @@ src
 
 ### Book APIs
 
-* GET /books
-* GET /books/{id}
-* POST /books
-* PUT /books/{id}
-* DELETE /books/{id}
+- GET `/books`
+- GET `/books/{id}`
+- POST `/books`
+- PUT `/books/{id}`
+- DELETE `/books/{id}`
+
+### Search APIs
+
+- GET `/books/search?title={title}`
+- GET `/books/search?title={title}&author={author}`
+- GET `/books/search/price?minPrice={minPrice}&maxPrice={maxPrice}`
 
 ### Category APIs
 
@@ -57,16 +67,21 @@ src
 * POST /category
 * PUT /category/{id}
 * DELETE /category/{id}
+* SEARCH /search/price
 
 ## Concepts Implemented
 
-* Layered Architecture
-* DTO Mapping
-* Constructor Injection
-* Validation
-* Global Exception Handling
-* Repository Pattern
-* One-to-Many / Many-to-One Mapping
+- Layered Architecture
+- DTO Mapping
+- Constructor Injection
+- Validation
+- Global Exception Handling
+- Repository Pattern
+- One-to-Many / Many-to-One Mapping
+- Pagination
+- Sorting
+- Derived Query Methods
+- Search APIs
 
 # Screenshots
 
@@ -94,9 +109,12 @@ src
 
 ![Category Not Found](screenshots/category_notfound.png)
 
+## Search by Price Range
+
+![Search By Price Range](screenshots/searchByPriceRange.png)
+
 ## Future Improvements
 
-* Search APIs
 * Swagger Documentation
 * JWT Authentication
 * Docker Support
