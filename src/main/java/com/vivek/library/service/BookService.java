@@ -8,6 +8,8 @@ import com.vivek.library.exception.BookNotFoundException;
 import com.vivek.library.exception.CategoryNotFoundException;
 import com.vivek.library.repository.BookRepository;
 import com.vivek.library.repository.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -30,15 +32,11 @@ public class BookService {
 
     }
 
-    public List<BookResponseDto> getAllBooks(){
-        List<Book> book= bookRepository.findAll();
+    public Page<BookResponseDto> getAllBooks(Pageable pageable){
+        Page<Book> books= bookRepository.findAll(pageable);
 
-        List<BookResponseDto> response= new ArrayList<>();
 
-        for(Book books :book){
-            response.add(mapToDto(books));
-        }
-        return response;
+        return books.map(this::mapToDto);
     }
 
     public BookResponseDto getBookById(Long id) {
@@ -74,12 +72,10 @@ public class BookService {
         return mapToDto(updatedBook);
     }
 
-    public boolean deleteBook(Long id){
+    public void deleteBook(Long id){
         Book book = bookRepository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id : "+id));
         
         bookRepository.delete(book);
-
-        return true;
     }
 
 

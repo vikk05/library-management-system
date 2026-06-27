@@ -5,6 +5,8 @@ import com.vivek.library.dto.CategoryResponseDto;
 import com.vivek.library.entity.Category;
 import com.vivek.library.exception.CategoryNotFoundException;
 import com.vivek.library.repository.CategoryRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -23,16 +25,10 @@ public class CategoryService {
         return mapToDto(category);
     }
 
-    public List<CategoryResponseDto> getAllCategory(){
-        List<Category> categories= categoryRepository.findAll();
+    public Page<CategoryResponseDto> getAllCategory(Pageable pageable){
+        Page<Category> categories= categoryRepository.findAll(pageable);
 
-        List<CategoryResponseDto> response= new ArrayList<>();
-
-        for(Category category:categories){
-            response.add(mapToDto(category));
-        }
-
-        return response;
+        return categories.map(this::mapToDto);
 
     }
 

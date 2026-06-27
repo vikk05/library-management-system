@@ -5,6 +5,8 @@ import com.vivek.library.dto.BookResponseDto;
 import com.vivek.library.service.BookService;
 
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,8 +22,8 @@ public class BookController {
          this.bookService = bookService;
      }
      @GetMapping
-     public List<BookResponseDto> getAllBooks(){
-         return bookService.getAllBooks();
+     public Page<BookResponseDto> getAllBooks(Pageable pageable){
+         return bookService.getAllBooks(pageable);
      }
 
      @GetMapping("/{id}")
@@ -41,11 +43,8 @@ public class BookController {
      }
      @DeleteMapping("/{id}")
      public ResponseEntity<Void> deleteBook(@PathVariable Long id){
-         boolean deleted= bookService.deleteBook(id);
+        bookService.deleteBook(id);
 
-         if(!deleted){
-             return ResponseEntity.notFound().build();
-         }
          return ResponseEntity.noContent().build();
 
      }

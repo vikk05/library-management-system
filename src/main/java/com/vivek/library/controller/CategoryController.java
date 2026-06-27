@@ -4,6 +4,8 @@ import com.vivek.library.dto.CategoryRequestDto;
 import com.vivek.library.dto.CategoryResponseDto;
 import com.vivek.library.service.CategoryService;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,8 +26,8 @@ public class CategoryController {
         return categoryService.getCategoryById(id);
     }
     @GetMapping
-    public List<CategoryResponseDto> getAllCategory(){
-        return categoryService.getAllCategory();
+    public Page<CategoryResponseDto> getAllCategory(Pageable pageable){
+        return categoryService.getAllCategory(pageable);
     }
     @PostMapping
     public CategoryResponseDto addCategory(@Valid @RequestBody CategoryRequestDto dto){
