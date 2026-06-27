@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -48,7 +49,14 @@ public class BookController {
          return ResponseEntity.noContent().build();
 
      }
-
+     @GetMapping("/search")
+     public List<BookResponseDto> searchBook(@RequestParam String title, @RequestParam String author){
+         return bookService.searchBook(title,author);
+     }
+     @GetMapping("/search/price")
+     public List<BookResponseDto> searchByPriceRange(@RequestParam BigDecimal minPrice,@RequestParam BigDecimal maxPrice){
+         return bookService.searchByPriceRange(minPrice,maxPrice);
+     }
 
 
 

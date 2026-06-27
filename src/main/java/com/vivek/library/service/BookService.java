@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,44 @@ public class BookService {
         Book book = bookRepository.findById(id).orElseThrow(()-> new BookNotFoundException("Book not found with id : "+id));
         
         bookRepository.delete(book);
+    }
+
+    public List<BookResponseDto> searchBook(String title,String author){
+        title=title.trim();
+        author=author.trim();
+
+        if(title.isBlank()||author.isBlank()){
+            throw new IllegalArgumentException("Search Cannot be Empty");
+        }
+        else if(title.length()<3 || author.length()<3){
+            throw new IllegalArgumentException("Search must be at least 3 characters");
+        }
+
+        List<Book> books= bookRepository.findByTitleContainingAndAuthorContaining(title,author);
+
+        List<BookResponseDto> response= new ArrayList<>();
+
+        for(Book book:books){
+            response.add(mapToDto(book));
+        }
+
+        return response;
+    }
+
+    public List<BookResponseDto> searchByPriceRange(BigDecimal minPrice, BigDecimal maxPrice){
+        if(minPrice.compareTo(BigDecimal.ZERO)<0 || maxPrice.compareTo(BigDecimal.ZERO)<0){
+            throw new IllegalArgumentException("Price cannot be negative");
+        }
+        if(minPrice.compareTo(maxPrice)>0){
+            throw new IllegalArgumentException("Min price can't be grater than max price");
+        }
+        List<Book> books= bookRepository.findByPriceBetween(minPrice,maxPrice);
+        List<BookResponseDto> response= new ArrayList<>();
+
+        for(Book book:books){
+            response.add(mapToDto(book));
+        }
+        return response;
     }
 
 

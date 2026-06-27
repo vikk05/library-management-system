@@ -14,6 +14,7 @@ A RESTful Library Management System built using Spring Boot. The project demonst
 * Category-Book Relationship
 * Spring Data JPA & Hibernate
 * MySQL Database
+* Pagination & Sorting
 
 ## Tech Stack
 
@@ -24,6 +25,7 @@ A RESTful Library Management System built using Spring Boot. The project demonst
 * MySQL
 * Maven
 * Postman
+
 
 ## Project Structure
 
@@ -94,7 +96,6 @@ src
 
 ## Future Improvements
 
-* Pagination & Sorting
 * Search APIs
 * Swagger Documentation
 * JWT Authentication
