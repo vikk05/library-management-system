@@ -19,6 +19,7 @@ A RESTful Library Management System built using Spring Boot. The project demonst
 - 🔍 Search by Title
 - 👤 Search by Title & Author
 - 💰 Search by Price Range
+- 🔍 Dynamic Search using Spring Data JPA Specifications
 
 ## Tech Stack
 
@@ -112,6 +113,10 @@ src
 ## Search by Price Range
 
 ![Search By Price Range](screenshots/searchByPriceRange.png)
+
+## Dynamic Search 
+
+![Dynamic Search](screenshots/dynamicSearch.png)
 
 ## Future Improvements
 
