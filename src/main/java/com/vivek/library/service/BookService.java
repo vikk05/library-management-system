@@ -2,14 +2,17 @@ package com.vivek.library.service;
 
 import com.vivek.library.dto.BookRequestDto;
 import com.vivek.library.dto.BookResponseDto;
+import com.vivek.library.dto.BookTitlePriceDto;
 import com.vivek.library.entity.Book;
 import com.vivek.library.entity.Category;
 import com.vivek.library.exception.BookNotFoundException;
 import com.vivek.library.exception.CategoryNotFoundException;
 import com.vivek.library.repository.BookRepository;
 import com.vivek.library.repository.CategoryRepository;
+import com.vivek.library.specification.BookSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -79,24 +82,55 @@ public class BookService {
         bookRepository.delete(book);
     }
 
-    public List<BookResponseDto> searchBook(String title,String author){
-        title=title.trim();
-        author=author.trim();
 
-        if(title.isBlank()||author.isBlank()){
-            throw new IllegalArgumentException("Search Cannot be Empty");
-        }
-        else if(title.length()<3 || author.length()<3){
-            throw new IllegalArgumentException("Search must be at least 3 characters");
+    public List<BookResponseDto> getBooksWithPriceGreaterThan(BigDecimal price){
+        if(price.compareTo(BigDecimal.ZERO)<0) {
+            throw new IllegalArgumentException("Price cannot be negative");
         }
 
-        List<Book> books= bookRepository.findByTitleContainingAndAuthorContaining(title,author);
+        List<Book> books= bookRepository.findBooksWithPriceGreaterThan(price);
+        List<BookResponseDto> responseDto=new ArrayList<>();
 
-        List<BookResponseDto> response= new ArrayList<>();
+        for(Book book :books){
+            responseDto.add(mapToDto(book));
+        }
+        return responseDto;
+    }
+    public List<BookTitlePriceDto> getBookTitleAndPrice(){
+        return bookRepository.getBookTitleAndPrice();
+    }
 
-        for(Book book:books){
+    public List<BookResponseDto> searchBooks(String title,String author,BigDecimal minPrice,BigDecimal maxPrice){
+
+        if (minPrice != null && minPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Minimum price cannot be negative");
+        }
+
+        if (maxPrice != null && maxPrice.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalArgumentException("Maximum price cannot be negative");
+        }
+
+        if (minPrice != null && maxPrice != null &&
+                minPrice.compareTo(maxPrice) > 0) {
+            throw new IllegalArgumentException("Minimum price cannot be greater than maximum price");
+        }
+        Specification<Book> spec=Specification.allOf();
+        if(title!=null && !title.isBlank()){
+            spec=spec.and(BookSpecification.titleContains(title));
+        }
+        if(author!=null && !author.isBlank()){
+            spec=spec.and(BookSpecification.authorContains(author));
+        }
+        if(minPrice!=null){
+            spec=spec.and(BookSpecification.priceGreaterThan(minPrice));
+        }
+        if(maxPrice!=null){
+            spec=spec.and(BookSpecification.priceLessThan(maxPrice));
+        }
+        List<Book> books=bookRepository.findAll(spec);
+        List<BookResponseDto> response=new ArrayList<>();
+        for(Book book:books)
             response.add(mapToDto(book));
-        }
 
         return response;
     }

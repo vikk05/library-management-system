@@ -2,6 +2,7 @@ package com.vivek.library.controller;
 
 import com.vivek.library.dto.BookRequestDto;
 import com.vivek.library.dto.BookResponseDto;
+import com.vivek.library.dto.BookTitlePriceDto;
 import com.vivek.library.service.BookService;
 
 import jakarta.validation.Valid;
@@ -50,15 +51,21 @@ public class BookController {
 
      }
      @GetMapping("/search")
-     public List<BookResponseDto> searchBook(@RequestParam String title, @RequestParam String author){
-         return bookService.searchBook(title,author);
+     public List<BookResponseDto> searchBook(@RequestParam(required=false) String title, @RequestParam(required=false) String author,@RequestParam(required=false) BigDecimal minPrice,@RequestParam(required=false) BigDecimal maxPrice){
+         return bookService.searchBooks(title,author,minPrice,maxPrice);
      }
      @GetMapping("/search/price")
      public List<BookResponseDto> searchByPriceRange(@RequestParam BigDecimal minPrice,@RequestParam BigDecimal maxPrice){
          return bookService.searchByPriceRange(minPrice,maxPrice);
      }
-
-
+     @GetMapping("/search/price/greater")
+     public List<BookResponseDto> getBooksWithPriceGreaterThan(@RequestParam BigDecimal price){
+          return bookService.getBooksWithPriceGreaterThan(price);
+     }
+     @GetMapping("/title-price")
+     public List<BookTitlePriceDto> getBookTitleAndPrice(){
+         return bookService.getBookTitleAndPrice();
+     }
 
      
 
