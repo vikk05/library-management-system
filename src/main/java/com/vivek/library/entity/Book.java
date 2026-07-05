@@ -6,6 +6,8 @@ import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name="books")
@@ -34,6 +36,9 @@ public class Book {
     @ManyToOne
     @JoinColumn(name = "category_id")
     private Category category;
+
+    @OneToMany(mappedBy="book")
+    public List<Borrow> borrows= new ArrayList<>();
 
     public Book() {
 
@@ -99,6 +104,13 @@ public class Book {
     public Category getCategory() {
         return this.category;
     }
+    public List<Borrow> getBorrows() {
+        return borrows;
+    }
+    public void setBorrows(List<Borrow> borrows) {
+        this.borrows = borrows;
+    }
+
 
 
 }

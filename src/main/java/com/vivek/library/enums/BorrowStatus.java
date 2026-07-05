@@ -1,8 +1,8 @@
 package com.vivek.library.enums;
 
 public enum BorrowStatus {
-        borrowed,
-        purchased,
-        returned
+        BORROWED,
+        PURCHASED,
+        RETURNED
 
 }

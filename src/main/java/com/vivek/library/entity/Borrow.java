@@ -4,6 +4,8 @@ import com.vivek.library.enums.BorrowStatus;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -27,7 +29,7 @@ public class Borrow {
 
 
     @ManyToOne
-    @JoinColumn(name="book_id")
+    @JoinColumn(name = "book_id")
     private Book book;
 
     public Borrow(){
@@ -40,7 +42,7 @@ public class Borrow {
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.status = status;
-        this.book = book;
+        this.book=book;
         this.dueDate=dueDate;
     }
 
@@ -92,6 +94,7 @@ public class Borrow {
     public void setBook(Book book) {
         this.book = book;
     }
+
     public LocalDate getDueDate() {
         return dueDate;
     }
