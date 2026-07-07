@@ -4,22 +4,38 @@
 
 A RESTful Library Management System built using Spring Boot. The project demonstrates clean architecture with DTOs, layered design, validation, exception handling, and MySQL database integration.
 
-## Features
+## ✨ Features
 
+### 📚 Book Management
 - 📚 Book CRUD APIs
 - 🗂️ Category CRUD APIs
+- 🔗 Category-Book Relationship
 - 📄 Request & Response DTOs
 - ✅ Input Validation
 - ⚠️ Global Exception Handling
-- 🔗 Category-Book Relationship
-- 🗄️ Spring Data JPA & Hibernate
-- 💾 MySQL Database Integration
+
+### 🔍 Search & Filtering
 - 📄 Pagination
 - 🔃 Sorting
 - 🔍 Search by Title
 - 👤 Search by Title & Author
 - 💰 Search by Price Range
 - 🔍 Dynamic Search using Spring Data JPA Specifications
+
+### 📖 Borrow & Return Management
+- 📖 Borrow Books
+- 🔄 Return Books
+- 🚫 Prevent Duplicate Borrowing
+- 📦 Inventory Management (Available Quantity Tracking)
+- 📅 Automatic Due Date Calculation
+- 📅 Return Date Tracking
+- 🔄 Transaction Management using `@Transactional`
+- ↩️ Automatic Rollback on Failure
+
+### ⚙️ Backend
+- 🗄️ Spring Data JPA & Hibernate
+- 💾 MySQL Database Integration
+- 📑 Swagger / OpenAPI Documentation
 
 ## Tech Stack
 
@@ -120,7 +136,6 @@ src
 
 ## Future Improvements
 
-* Swagger Documentation
 * JWT Authentication
 * Docker Support
 * Unit Testing
