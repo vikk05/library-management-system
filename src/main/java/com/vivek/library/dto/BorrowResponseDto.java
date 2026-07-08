@@ -1,18 +1,34 @@
 package com.vivek.library.dto;
 
 import com.vivek.library.enums.BorrowStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class BorrowResponseDto {
-    private Long bookId;
-    private String borrowerName;
-    private String bookTitle;
+    @Schema(description = "Unique borrow transaction ID", example = "15")
     private Long borrowId;
-    private LocalDate dueDate;
+
+    @Schema(description = "Book ID", example = "3")
+    private Long bookId;
+
+    @Schema(description = "Book title", example = "Clean Code")
+    private String bookTitle;
+
+    @Schema(description = "Borrower's name", example = "Vivek")
+    private String borrowerName;
+
+    @Schema(description = "Date when the book was borrowed", example = "2026-07-09")
     private LocalDate borrowDate;
+
+    @Schema(description = "Due date for returning the book", example = "2026-07-23")
+    private LocalDate dueDate;
+
+    @Schema(description = "Actual return date", example = "2026-07-18")
     private LocalDate returnDate;
+
+    @Schema(description = "Current borrow status", example = "BORROWED")
     private BorrowStatus status;
     public BorrowResponseDto(){
 

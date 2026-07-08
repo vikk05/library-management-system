@@ -1,5 +1,6 @@
 package com.vivek.library.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
@@ -10,18 +11,43 @@ public class BookRequestDto {
 
     private Long categoryId;
 
+
+    @Schema(
+            description = "Title of the book",
+            example = "Clean Code"
+    )
     @NotBlank
     private String title;
 
+
+    @Schema(
+            description = "Author of the book",
+            example = "Robert C. Martin"
+    )
     @NotBlank
     private String author;
 
+
+    @Schema(
+            description = "ISBN number",
+            example = "9780132350884"
+    )
     @NotBlank
     private String isbn;
 
+
+    @Schema(
+            description = "Book price",
+            example = "599.99"
+    )
     @PositiveOrZero
     private BigDecimal price;
 
+
+    @Schema(
+            description = "Total quantity of books",
+            example = "10"
+    )
     @Positive
     private Integer quantity;
     public BookRequestDto(){

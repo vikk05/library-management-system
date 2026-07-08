@@ -1,25 +1,21 @@
 package com.vivek.library.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+
 public class BorrowRequestDto {
 
-    private Long bookId;
 
+    @Schema(
+            description = "Name of the borrower",
+            example = "Vivek"
+    )
     private String borrowerName;
     public BorrowRequestDto(){
 
     }
 
     public BorrowRequestDto(Long bookId, String borrowerName) {
-        this.bookId = bookId;
         this.borrowerName = borrowerName;
-    }
-
-    public Long getBookId() {
-        return bookId;
-    }
-
-    public void setBookId(Long bookId) {
-        this.bookId = bookId;
     }
 
     public String getBorrowerName() {
