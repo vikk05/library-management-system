@@ -7,15 +7,17 @@ public class RegisterResponseDto {
     private String name;
     private String email;
     private String message;
+    private Role role;
     public RegisterResponseDto(){
 
     }
 
-    public RegisterResponseDto(Long id, String name, String email, String message) {
+    public RegisterResponseDto(Long id, String name, String email, String message, Role role) {
         this.id = id;
         this.name = name;
         this.email = email;
         this.message = message;
+        this.role=role;
     }
 
     public Long getId() {
@@ -50,5 +52,10 @@ public class RegisterResponseDto {
         this.message = message;
     }
 
-
+    public void setRole(Role role){
+        this.role=role;
+    }
+    public Role getRole(){
+        return role;
+    }
 }
