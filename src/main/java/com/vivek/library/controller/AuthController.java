@@ -1,5 +1,7 @@
 package com.vivek.library.controller;
 
+import com.vivek.library.dto.LoginRequestDto;
+import com.vivek.library.dto.LoginResponseDto;
 import com.vivek.library.dto.RegisterRequestDto;
 import com.vivek.library.dto.RegisterResponseDto;
 import com.vivek.library.service.AuthService;
@@ -26,5 +28,12 @@ public class AuthController {
 
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto dto){
+        LoginResponseDto response=authService.login(dto);
+
+        return ResponseEntity.ok(response);
     }
 }

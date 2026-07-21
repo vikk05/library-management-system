@@ -1,5 +1,7 @@
 package com.vivek.library.service;
 
+import com.vivek.library.dto.LoginRequestDto;
+import com.vivek.library.dto.LoginResponseDto;
 import com.vivek.library.dto.RegisterRequestDto;
 import com.vivek.library.dto.RegisterResponseDto;
 import com.vivek.library.entity.User;
@@ -7,8 +9,12 @@ import com.vivek.library.enums.Role;
 import com.vivek.library.exception.EmailAlreadyExistsException;
 import com.vivek.library.mapper.UserMapper;
 import com.vivek.library.repository.UserRepository;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import com.vivek.library.service.JwtService;
 
 import java.util.Optional;
 
@@ -17,11 +23,15 @@ public class AuthService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final JwtService jwtService;
+    private final AuthenticationManager authenticationManager;
 
-    public AuthService(UserRepository userRepository, PasswordEncoder passwordEncoder, UserMapper userMapper) {
+    public AuthService(UserRepository userRepository,JwtService jwtService ,PasswordEncoder passwordEncoder, UserMapper userMapper,AuthenticationManager authenticationManager) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.userMapper = userMapper;
+        this.authenticationManager=authenticationManager;
+        this.jwtService=jwtService;
     }
 
     public RegisterResponseDto register(RegisterRequestDto dto){
@@ -46,5 +56,14 @@ public class AuthService {
         response.setMessage("User Registered Successfully");
 
         return response;
+    }
+
+    public LoginResponseDto login(LoginRequestDto dto){
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(dto.getEmail(),dto.getPassword()));
+
+        User user=(User) authentication.getPrincipal();
+        String token=jwtService.generateToken(user);
+
+        return new LoginResponseDto(user.getEmail(),token,user.getRole());
     }
 }
