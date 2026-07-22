@@ -24,8 +24,11 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         this.jwtService = jwtService;
         this.userDetailsService = userDetailsService;
     }
+
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        System.out.println("Request: " + request.getMethod() + " " + request.getRequestURI());
+        System.out.println("Authorization Header: " + request.getHeader("Authorization"));
         String authHeader= request.getHeader("Authorization");
 
         if(authHeader==null || !authHeader.startsWith("Bearer ")){
@@ -43,6 +46,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                         new WebAuthenticationDetailsSource().buildDetails(request)
                 );
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+                System.out.println("Authenticated User: " + userDetails.getUsername());
+                System.out.println("Authorities: " + userDetails.getAuthorities());
             }
 
         }

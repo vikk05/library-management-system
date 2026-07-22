@@ -3,6 +3,7 @@ package com.vivek.library.config;
 import com.vivek.library.security.JwtAuthenticationFilter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -37,6 +38,18 @@ public class SecurityConfig {
         http.csrf(csrf -> csrf.disable());
         http.authorizeHttpRequests(auth -> {auth.requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**")
                 .permitAll()
+                .requestMatchers(HttpMethod.GET, "/books/**")
+                .hasAnyRole("USER", "ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/books/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.PUT, "/books/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.DELETE, "/books/**")
+                .hasRole("ADMIN")
+
                 .anyRequest().authenticated();
         });
         http.sessionManagement(session ->

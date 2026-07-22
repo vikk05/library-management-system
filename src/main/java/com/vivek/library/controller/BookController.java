@@ -5,7 +5,9 @@ import com.vivek.library.dto.BookResponseDto;
 import com.vivek.library.dto.BookTitlePriceDto;
 import com.vivek.library.service.BookService;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/books")
+@SecurityRequirement(name = "bearerAuth")
 public class BookController {
 
      private final BookService bookService;
@@ -24,7 +27,7 @@ public class BookController {
          this.bookService = bookService;
      }
      @GetMapping
-     public Page<BookResponseDto> getAllBooks(Pageable pageable){
+     public Page<BookResponseDto> getAllBooks(@ParameterObject Pageable pageable){
          return bookService.getAllBooks(pageable);
      }
 
