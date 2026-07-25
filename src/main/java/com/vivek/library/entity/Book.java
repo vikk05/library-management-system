@@ -38,7 +38,7 @@ public class Book {
     private Category category;
 
     @OneToMany(mappedBy="book")
-    public List<Borrow> borrows= new ArrayList<>();
+    public List<BorrowRecord> borrowRecords = new ArrayList<>();
 
     public Book() {
 
@@ -104,11 +104,11 @@ public class Book {
     public Category getCategory() {
         return this.category;
     }
-    public List<Borrow> getBorrows() {
-        return borrows;
+    public List<BorrowRecord> getBorrows() {
+        return borrowRecords;
     }
-    public void setBorrows(List<Borrow> borrows) {
-        this.borrows = borrows;
+    public void setBorrows(List<BorrowRecord> borrowRecords) {
+        this.borrowRecords = borrowRecords;
     }
 
 

@@ -50,6 +50,18 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/books/**")
                 .hasRole("ADMIN")
 
+                .requestMatchers(HttpMethod.GET,"/borrows/me")
+                .hasAnyRole("USER","ADMIN")
+
+                .requestMatchers(HttpMethod.GET,"/borrows")
+                .hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.POST, "/borrows")
+                .hasAnyRole("USER", "ADMIN")
+
+                .requestMatchers(HttpMethod.PUT, "/borrows/*/return")
+                .hasAnyRole("USER", "ADMIN")
+
                 .anyRequest().authenticated();
         });
         http.sessionManagement(session ->

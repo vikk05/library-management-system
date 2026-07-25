@@ -1,16 +1,26 @@
 package com.vivek.library.controller;
 
+import com.vivek.library.dto.AdminBorrowResponseDto;
 import com.vivek.library.dto.BorrowRequestDto;
 import com.vivek.library.dto.BorrowResponseDto;
+import com.vivek.library.entity.User;
 import com.vivek.library.service.BorrowService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import io.swagger.v3.oas.annotations.tags.Tag;
+
+import java.util.List;
 
 @Tag(
         name = "Borrow Management",
@@ -19,7 +29,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
 @RequestMapping("/borrows")
-
+@SecurityRequirement(name="bearerAuth")
 public class BorrowController {
     private final BorrowService borrowService;
 
@@ -46,9 +56,9 @@ public class BorrowController {
                     description = "Book not found"
             )
     })
-    @PostMapping("/{bookId}")
-    public BorrowResponseDto borrowBook(@PathVariable Long bookId, @RequestBody BorrowRequestDto dto){
-        return borrowService.borrowBook(bookId, dto);
+    @PostMapping
+    public BorrowResponseDto borrowBook( @Parameter(hidden = true)@AuthenticationPrincipal User user, @RequestBody @Valid BorrowRequestDto dto){
+        return borrowService.borrowBook(user, dto);
     }
 
     @Operation(
@@ -70,11 +80,24 @@ public class BorrowController {
             )
     })
     @PutMapping("/{borrowId}/return")
-    public BorrowResponseDto returnBook(@Parameter(
-            description = "Borrow transaction ID",
-            example = "5"
-    )@PathVariable Long borrowId){
-        return borrowService.returnBook(borrowId);
+    public BorrowResponseDto returnBook(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal User user,
+            @PathVariable Long borrowId) {
+
+        return borrowService.returnBook(user, borrowId);
+    }
+    @GetMapping("/me")
+    public Page<BorrowResponseDto> getMyBorrowHistory(
+            @Parameter(hidden = true)
+            @AuthenticationPrincipal User user,@PageableDefault(size = 10, sort = "borrowDate", direction = Sort.Direction.DESC) Pageable pageable) {
+
+        return borrowService.getMyBorrowHistory(user,pageable);
+    }
+
+    @GetMapping
+    public Page<AdminBorrowResponseDto> getAllBorrowHistory(@PageableDefault(size = 10, sort = "borrowDate", direction = Sort.Direction.DESC) Pageable pageable){
+        return borrowService.getAllBorrowHistory(pageable);
     }
 
 }

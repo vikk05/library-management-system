@@ -16,9 +16,6 @@ public class BorrowResponseDto {
     @Schema(description = "Book title", example = "Clean Code")
     private String bookTitle;
 
-    @Schema(description = "Borrower's name", example = "Vivek")
-    private String borrowerName;
-
     @Schema(description = "Date when the book was borrowed", example = "2026-07-09")
     private LocalDate borrowDate;
 
@@ -33,9 +30,8 @@ public class BorrowResponseDto {
     public BorrowResponseDto(){
 
     }
-    public BorrowResponseDto(Long bookId, String borrowerName, String bookTitle, LocalDate borrowDate,LocalDate returnDate,LocalDate dueDate,BorrowStatus status ,Long borrowId) {
+    public BorrowResponseDto(Long bookId, String bookTitle, LocalDate borrowDate,LocalDate returnDate,LocalDate dueDate,BorrowStatus status ,Long borrowId) {
         this.bookId = bookId;
-        this.borrowerName = borrowerName;
         this.bookTitle = bookTitle;
         this.borrowDate=borrowDate;
         this.returnDate=returnDate;
@@ -93,14 +89,6 @@ public class BorrowResponseDto {
 
     public void setBookId(Long bookId) {
         this.bookId = bookId;
-    }
-
-    public String getBorrowerName() {
-        return borrowerName;
-    }
-
-    public void setBorrowerName(String borrowerName) {
-        this.borrowerName = borrowerName;
     }
 
     public String getBookTitle() {

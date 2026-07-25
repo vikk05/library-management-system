@@ -7,15 +7,15 @@ import java.time.LocalDate;
 
 
 @Entity
-public class Borrow {
+public class BorrowRecord {
 
     @Id
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    private String borrowerName;
-
-
+    @ManyToOne
+    @JoinColumn(name="user_id")
+    private User user;
 
     private LocalDate dueDate;
     private LocalDate borrowDate;
@@ -30,28 +30,20 @@ public class Borrow {
     @JoinColumn(name = "book_id")
     private Book book;
 
-    public Borrow(){
+    public BorrowRecord(){
 
     }
 
-    public Borrow(Long id, String borrowerName, LocalDate borrowDate,LocalDate dueDate, LocalDate returnDate, BorrowStatus status, Book book) {
+    public BorrowRecord(Long id,User user, LocalDate borrowDate, LocalDate dueDate, LocalDate returnDate, BorrowStatus status, Book book) {
         this.id = id;
-        this.borrowerName = borrowerName;
         this.borrowDate = borrowDate;
         this.returnDate = returnDate;
         this.status = status;
         this.book=book;
         this.dueDate=dueDate;
+        this.user=user;
     }
 
-
-    public String getBorrowerName() {
-        return borrowerName;
-    }
-
-    public void setBorrowerName(String borrowerName) {
-        this.borrowerName = borrowerName;
-    }
 
     public Long getId() {
         return id;
@@ -99,5 +91,13 @@ public class Borrow {
 
     public void setDueDate(LocalDate dueDate) {
         this.dueDate = dueDate;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }

@@ -1,28 +1,30 @@
 package com.vivek.library.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.NotNull;
 
 public class BorrowRequestDto {
 
 
     @Schema(
-            description = "Name of the borrower",
-            example = "Vivek"
+            description = "ID of the Book to Borrow",
+            example = "1"
     )
-    private String borrowerName;
+    @NotNull(message="book id is required")
+    private Long bookId;
     public BorrowRequestDto(){
 
     }
 
-    public BorrowRequestDto(Long bookId, String borrowerName) {
-        this.borrowerName = borrowerName;
+    public BorrowRequestDto(Long bookId) {
+        this.bookId = bookId;
     }
 
-    public String getBorrowerName() {
-        return borrowerName;
+    public Long getBookId() {
+        return bookId;
     }
 
-    public void setBorrowerName(String borrowerName) {
-        this.borrowerName = borrowerName;
+    public void setBookId(Long bookId) {
+        this.bookId = bookId;
     }
 }
