@@ -21,5 +21,10 @@ public interface BookRepository extends JpaRepository<Book,Long>, JpaSpecificati
     @Query("Select b from Book b where b.price>:price")
     List<Book> findBooksWithPriceGreaterThan(@Param("price") BigDecimal price);
     List<Book> findByQuantity(Integer quantity);
+    @Query("""
+           SELECT COALESCE(SUM(b.availableQuantity), 0)
+           FROM Book b
+           """)
+    Long getTotalAvailableBooks();
 
 }

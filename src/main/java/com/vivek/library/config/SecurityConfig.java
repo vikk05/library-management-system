@@ -62,6 +62,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.PUT, "/borrows/*/return")
                 .hasAnyRole("USER", "ADMIN")
 
+                .requestMatchers(HttpMethod.GET,"/admin/**")
+                .hasRole("ADMIN")
+
                 .anyRequest().authenticated();
         });
         http.sessionManagement(session ->

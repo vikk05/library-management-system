@@ -3,6 +3,7 @@ package com.vivek.library.service;
 import com.vivek.library.dto.AdminBorrowResponseDto;
 import com.vivek.library.dto.BorrowRequestDto;
 import com.vivek.library.dto.BorrowResponseDto;
+import com.vivek.library.dto.OverdueBookResponseDto;
 import com.vivek.library.entity.Book;
 import com.vivek.library.entity.BorrowRecord;
 import com.vivek.library.entity.User;
@@ -16,7 +17,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Optional;
 
@@ -25,6 +28,8 @@ public class BorrowService {
 
     private final BorrowRepository borrowRepository;
     private final BookRepository bookRepository;
+    private static final BigDecimal FINE_PER_DAY =
+            BigDecimal.TEN;
 
 
     public BorrowService(BorrowRepository borrowRepository, BookRepository bookRepository) {
@@ -43,10 +48,10 @@ public class BorrowService {
             throw new DuplicateBorrowException("You have already borrowed this book. Please return it before borrowing again");
     }
 
-        if(book.getAvailableQuant()<=0){
+        if(book.getAvailableQuantity()<=0){
             throw new BookOutOfStockException("Book is Currently Out of Stock");
         }
-        book.setAvailableQuant(book.getAvailableQuant()-1);
+        book.setAvailableQuantity(book.getAvailableQuantity()-1);
         BorrowRecord borrowRecord =new BorrowRecord();
 
         LocalDate today= LocalDate.now();
@@ -74,7 +79,7 @@ public class BorrowService {
             throw new AlreadyReturnException("Book Already returned");
         }
         Book book = borrowRecord.getBook();
-        book.setAvailableQuant(book.getAvailableQuant()+1);
+        book.setAvailableQuantity(book.getAvailableQuantity()+1);
         borrowRecord.setReturnDate(LocalDate.now());
         borrowRecord.setStatus(BorrowStatus.RETURNED);
         bookRepository.save(book);
@@ -93,6 +98,12 @@ public class BorrowService {
         Page <BorrowRecord> borrowRecords = borrowRepository.findAll(pageable);
 
         return borrowRecords.map(this::mapToAdminDto);
+    }
+
+    public Page<OverdueBookResponseDto> getOverdueBooks(Pageable pageable){
+        Page<BorrowRecord> borrowRecords = borrowRepository.findByStatusAndDueDateBefore(BorrowStatus.BORROWED,LocalDate.now(),pageable);
+
+        return borrowRecords.map(this::mapToOverdueDto);
     }
         private BorrowResponseDto mapToDto(BorrowRecord borrowRecord){
             BorrowResponseDto dto= new BorrowResponseDto();
@@ -122,6 +133,32 @@ public class BorrowService {
         response.setEmail(borrowRecord.getUser().getEmail());
 
         return response;
+    }
 
+    private OverdueBookResponseDto mapToOverdueDto(BorrowRecord borrowRecord){
+        OverdueBookResponseDto response=new OverdueBookResponseDto();
+
+        response.setUserId(borrowRecord.getUser().getId());
+        response.setBookId(borrowRecord.getBook().getId());
+        response.setBorrowDate(borrowRecord.getBorrowDate());
+        response.setDueDate(borrowRecord.getDueDate());
+        response.setBorrowId(borrowRecord.getId());
+        response.setBookTitle(borrowRecord.getBook().getTitle());
+        response.setUsername(borrowRecord.getUser().getUsername());
+        response.setEmail(borrowRecord.getUser().getEmail());
+
+        long overdueDays = ChronoUnit.DAYS.between(
+                borrowRecord.getDueDate(),
+                LocalDate.now()
+        );
+
+        response.setOverdueDays(overdueDays);
+        BigDecimal fine = FINE_PER_DAY.multiply(
+                BigDecimal.valueOf(overdueDays)
+        );
+
+        response.setFine(fine);
+
+        return response;
     }
 }

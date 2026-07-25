@@ -28,7 +28,7 @@ public class Book {
     @Positive(message="Quantity can't be negative")
     private Integer quantity;
     @Column(nullable = false)
-    private Integer availableQuant;
+    private Integer availableQuantity;
     @Column(nullable = false, precision=10,scale =2)
     @PositiveOrZero(message="Price can be zero but not negative")
     private BigDecimal price;
@@ -44,12 +44,12 @@ public class Book {
 
     }
 
-    public Book(String title, String author, String isbn, Integer quantity, Integer availableQuant, BigDecimal price, Category category) {
+    public Book(String title, String author, String isbn, Integer quantity, Integer availableQuantity, BigDecimal price, Category category) {
         this.title = title;
         this.author = author;
         this.isbn = isbn;
         this.quantity = quantity;
-        this.availableQuant = availableQuant;
+        this.availableQuantity = availableQuantity;
         this.price = price;
         this.category = category;
     }
@@ -86,11 +86,11 @@ public class Book {
     public Integer getQuantity() {
         return this.quantity;
     }
-    public void setAvailableQuant(Integer availableQuant) {
-        this.availableQuant = availableQuant;
+    public void setAvailableQuantity(Integer availableQuantity) {
+        this.availableQuantity = availableQuantity;
     }
-    public Integer getAvailableQuant() {
-        return this.availableQuant;
+    public Integer getAvailableQuantity() {
+        return this.availableQuantity;
     }
     public void setPrice(BigDecimal price) {
         this.price = price;

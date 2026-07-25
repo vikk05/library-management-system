@@ -62,7 +62,7 @@ public class BookService {
             existingbook.setQuantity(1000);
         }
 
-        existingbook.setAvailableQuant(existingbook.getQuantity());
+        existingbook.setAvailableQuantity(existingbook.getQuantity());
 
         Category category = categoryRepository.findById(dto.getCategoryId())
                 .orElseThrow(() ->
@@ -160,12 +160,12 @@ public class BookService {
         book.setPrice(dto.getPrice());
         book.setIsbn(dto.getIsbn());
         book.setQuantity(dto.getQuantity());
-        book.setAvailableQuant(dto.getQuantity());
+        book.setAvailableQuantity(dto.getQuantity());
 
         if(book.getQuantity()>1000){
             book.setQuantity(1000);
         }
-        book.setAvailableQuant(book.getQuantity());
+        book.setAvailableQuantity(book.getQuantity());
 
 
 
@@ -185,7 +185,7 @@ public class BookService {
         dto.setIsbn(book.getIsbn());
         dto.setPrice(book.getPrice());
         dto.setQuantity(book.getQuantity());
-        dto.setAvailableQuant(book.getAvailableQuant());
+        dto.setAvailableQuant(book.getAvailableQuantity());
 
         return dto;
     }
