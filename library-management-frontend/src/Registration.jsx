@@ -1,39 +1,63 @@
 import axios from "axios";
+import { useState} from "react"
+import { Link, useNavigate } from "react-router-dom";
 
 function Registration() {
  const [name,setName] = useState("");
  const [email,setEmail]=useState("");
  const [password,setPassword] = useState("");
- const handleRegister = async () => {
-    try{
-        const response = await axios.post("http://localhost:8080/api/auth/register",user);
-        alert("Registered Sucessfully");
-    }catch(error){
-        alert("Registration failed");
-    }
+ const [address,setAddress] = useState("");
+ const [contactNumber,setContactNumber]= useState("");
+ const navigate=useNavigate();
 
-        const user ={
+
+ const handleRegister = async () => {
+    const user ={
             name,
             email,
-            password
+            password,
+            address,
+            contactNumber
         };
-
         if(user.name.trim()===""){
             alert("Name is Required");
             return;
         }
-        else if(user.email.trim()===""){
+        if(user.email.trim()===""){
             alert("Email is required");
             return;
         }
-        else if(user.password.trim()===""){
+        if(user.password.trim()===""){
             alert("Password is Required");
             return;
-
+        }
+        if(user.contactNumber.trim()===""){
+            alert("contact number is Required");
+            return;
+        }
+        if(user.address.trim()===""){
+            alert("Address is Required");
+            return;
         }
         
+    try{
+        const response = await axios.post("http://localhost:8080/auth/register",user);
+        alert(response.data.message);
+        navigate("/login");
+    }catch(error){
+
+        if(error.response){
+            alert(error.response.data.message)
+            
+        }
+        else{
+        alert("Unable to connect to server");
+        }
+    }  
 
     };
+
+
 return(
     <>
     
@@ -49,10 +73,17 @@ return(
 
     <input type="password" placeholder="Enter your password" value={password} onChange={(event)=>{setPassword(event.target.value)}}/>
 
+    <input type="text" placeholder="Enter your contact number" value={contactNumber} onChange={(event)=>{setContactNumber(event.target.value)}}/>
+
+    <input type="text" placeholder="Enter your address" value={address} onChange={(event)=>{setAddress(event.target.value)}}/>
+
     <p>Name: {name}</p>
     <p>Email:{email}</p>
     <p>Password:{password}</p>
     <button onClick={handleRegister}>Register</button>
+    <p>
+        Already have an account? <Link to='/login'>Login</Link>
+    </p>
 
     </>
 );
